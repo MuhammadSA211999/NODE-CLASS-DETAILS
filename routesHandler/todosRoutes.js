@@ -36,6 +36,23 @@ router.get('/active', async (req, res) => {
     }
 })
 
+//get all todos mathecs with title
+router.get('/title', async (req, res) => {
+    try {
+        // no need to create below todo instance or document
+        // const todo = new Todo()
+        const todos = await Todo.findInTitle()
+            .select({ _id: 0, date: 0 })
+            .limit(3)
+        console.log(todos);
+
+        res.status(200).json({ message: 'success', data: todos })
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'server side error' })
+    }
+})
+
 //get a todo by id
 router.get('/:id', async (req, res) => {
     const { id } = req.params

@@ -27,6 +27,13 @@ todoSchema.methods = {
         return mongoose.model('Todo').find({ status: 'active' })
     }
 }
+
+//coustom static methods 
+todoSchema.statics = {
+    findInTitle: function () {
+        return this.find({ title: /js/i })
+    }
+}
 // create the todo model based on todoSchema 
 // const Todo = mongoose.model('Todo', todoSchema)
 module.exports = todoSchema
