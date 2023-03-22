@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const app = express()
 const cors = require('cors')
 const todosRouter = require('./routesHandler/todosRoutes')
+const userRouter = require('./routesHandler/userRoutes')
 app.use(express.json())
 app.use(cors())
 const PORT = 9000
@@ -26,6 +27,8 @@ app.get('/', (req, res) => {
 })
 //use todos routes
 app.use('/todos', todosRouter)
+//use user routes
+app.use('/user', userRouter)
 
 const appErrorHandler = (err, req, res, next) => {
     console.log(err);
