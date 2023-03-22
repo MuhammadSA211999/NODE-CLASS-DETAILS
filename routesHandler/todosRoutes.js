@@ -1,12 +1,13 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const router = express.Router()
+const authGurd = require('../middlewares/authGurd')
 const todoSchema = require('../schemas/todoSchema')
 //create ongoose instance model
 const Todo = new mongoose.model('Todo', todoSchema)
 
 //get all todos 
-router.get('/', async (req, res) => {
+router.get('/', authGurd, async (req, res) => {
     try {
         const todos = await Todo.find({})
             .select({ _id: 0, date: 0 })
