@@ -19,6 +19,14 @@ const todoSchema = mongoose.Schema({
         default: Date.now()
     }
 })
+
+//create coustom method of todoSchema::: before (initialize a model)
+todoSchema.methods = {
+    //actual method
+    findActive: function () {
+        return mongoose.model('Todo').find({ status: 'active' })
+    }
+}
 // create the todo model based on todoSchema 
-const Todo = mongoose.model('Todo', todoSchema)
-module.exports = Todo
+// const Todo = mongoose.model('Todo', todoSchema)
+module.exports = todoSchema

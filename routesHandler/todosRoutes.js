@@ -1,6 +1,9 @@
 const express = require('express')
+const mongoose = require('mongoose')
 const router = express.Router()
-const Todo = require('../schemas/todoSchema')
+const todoSchema = require('../schemas/todoSchema')
+//create ongoose instance model
+const Todo = new mongoose.model('Todo', todoSchema)
 
 //get all todos 
 router.get('/', async (req, res) => {
@@ -13,6 +16,22 @@ router.get('/', async (req, res) => {
         res.status(200).json({ message: 'success', data: todos })
     } catch (error) {
         // console.log(error);
+        res.status(500).json({ error: 'server side error' })
+    }
+})
+
+//get all active todos 
+router.get('/active', async (req, res) => {
+    try {
+        const todo = new Todo()
+        const todos = await todo.findActive()
+            .select({ _id: 0, date: 0 })
+            .limit(3)
+        console.log(todos);
+
+        res.status(200).json({ message: 'success', data: todos })
+    } catch (error) {
+        console.log(error);
         res.status(500).json({ error: 'server side error' })
     }
 })
