@@ -34,6 +34,13 @@ todoSchema.statics = {
         return this.find({ title: /js/i })
     }
 }
+
+//coustom query methods 
+todoSchema.query = {
+    findByLanguage: function (lang) {
+        return this.find({ title: new RegExp(lang, "i") })
+    }
+}
 // create the todo model based on todoSchema 
 // const Todo = mongoose.model('Todo', todoSchema)
 module.exports = todoSchema
