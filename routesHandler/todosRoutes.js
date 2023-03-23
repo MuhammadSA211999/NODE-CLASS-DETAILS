@@ -3,8 +3,12 @@ const mongoose = require('mongoose')
 const router = express.Router()
 const authGurd = require('../middlewares/authGurd')
 const todoSchema = require('../schemas/todoSchema')
+
 //create ongoose instance model
 const Todo = new mongoose.model('Todo', todoSchema)
+//user Schema and Model need to populate
+const userSchema = require('../schemas/userSchema')
+const User = new mongoose.model('User', userSchema)
 
 //get all todos 
 router.get('/', authGurd, async (req, res) => {
@@ -92,9 +96,16 @@ router.post('/', authGurd, async (req, res) => {
         const newTodo = { ...req.body, user: req?.user?.id }
         console.log('neTo', newTodo);
 
-        const result = await Todo.create(newTodo)
-        // console.log(result);
-        res.status(200).json({ message: 'todo succesfully inserted' })
+        const todo = await Todo.create(newTodo)
+        // console.log(todo);
+        //user info from authGurd req property
+        const id = req?.user?.id
+        const userResult = await User.updateOne(
+            { _id: id },
+            { $push: { 'todos': todo?._id } },
+            { new: true }
+        )
+        res.status(200).json({ message: 'todo succesfully inserted', data: userResult })
     } catch (error) {
         // console.log(error);
         res.status(500).json({ error: 'could not add todo' })

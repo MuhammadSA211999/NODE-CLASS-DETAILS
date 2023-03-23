@@ -25,7 +25,13 @@ const userSchema = mongoose.Schema({
     date: {
         type: Date,
         default: Date.now()
-    }
+    },
+    todos: [
+        {
+            type: mongoose.Types.ObjectId,
+            ref: 'Todo'
+        }
+    ]
 })
 
 // create the todo model based on todoSchema 
