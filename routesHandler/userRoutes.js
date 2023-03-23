@@ -29,12 +29,15 @@ router.post('/login', async (req, res) => {
     const { password, id } = req.body
     try {
         const user = await User.findById({ _id: id })
-        if (user?.id) {
+        console.log('user in login', user);
+
+        if (user?._id) {
             const isMatch = await bcrypt.compare(password, user?.password)
             if (isMatch) {
                 //create a token and send it to user 
                 const token = jwt.sign({
                     //user info in token payload 
+                    id: user?._id,
                     name: user.name,
                     uname: user.username,
                     phone: user.phone

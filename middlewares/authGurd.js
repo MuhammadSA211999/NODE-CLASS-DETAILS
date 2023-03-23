@@ -11,10 +11,16 @@ const authGurd = async (req, res, next) => {
         if (token) {
             const info = jwt.verify(token, process.env.JWT_SECRET)
             console.log('info', info);
-            const { name, username, phone } = info
-            const user = { name, username, phone }
-            req.user = user
-            next()
+            if (info) {
+                const { name, username, phone, id } = info
+                const user = { name, username, phone, id }
+                req.user = user
+                next()
+            }
+            else {
+                res.status(401).json({ error: 'info nei request in token' })
+            }
+
         }
         else {
             res.status(401).json({ error: 'unAuthenticated request in token' })

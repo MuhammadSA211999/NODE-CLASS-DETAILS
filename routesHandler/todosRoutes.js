@@ -84,11 +84,13 @@ router.get('/:id', async (req, res) => {
 })
 
 // post a todos
-router.post('/', async (req, res) => {
+router.post('/', authGurd, async (req, res) => {
     try {
         // const newTodo = new Todo(req.body)
         // await newTodo.save()
-        const newTodo = req.body
+        const newTodo = { ...req.body, user: req?.user?.id }
+        console.log('neTo', newTodo);
+
         const result = await Todo.create(newTodo)
         // console.log(result);
         res.status(200).json({ message: 'todo succesfully inserted' })
